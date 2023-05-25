@@ -15,10 +15,14 @@ const WaiterForm = () => {
         const typingTimer = setTimeout(() => {
             console.log(formData);
         }, 500)
+        const storedFormData = localStorage.getItem("formData");
+        if (storedFormData) {
+            setFormData(JSON.parse(storedFormData));
+        }
         return () => {
             clearTimeout(typingTimer);
         }
-    }, [formData]);
+    }, []);
 
     const handleChange = (e) => {
       //  e.preventDefault();
@@ -35,6 +39,13 @@ const WaiterForm = () => {
         e.preventDefault();
         console.log("Form is submitted");
         console.log(formData);
+        localStorage.setItem(formData.dish, JSON.stringify(formData));
+        setFormData({
+        OrderId: "",
+        price: "",
+        dish: "",
+        table: "Table-1"  
+        })
     }
     return (
         <>
