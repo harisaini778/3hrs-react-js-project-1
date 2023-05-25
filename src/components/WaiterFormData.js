@@ -6,14 +6,14 @@ const WaiterFormData = (props) => {
 
   const handleDeleteChange = (orderId) => {
     const updatedTableData = tableData.filter((tableData) => tableData.OrderId !== orderId);
-    localStorage.setItem("tableData", JSON.stringify(updatedTableData));
+    localStorage.setItem(tableData.dish, JSON.stringify(updatedTableData));
     setTableData(updatedTableData);
   };
 
   const renderTableData = (table) => {
     return tableData
       .filter((tableData) => tableData.table === table)
-      .map((tableData) => (
+      .map((tableData) => (<CardElement>
         <ul key={tableData.OrderId} type="none">
           <li>Order Id: {tableData.OrderId}</li>
           <li>Price: {tableData.price}</li>
@@ -26,6 +26,7 @@ const WaiterFormData = (props) => {
             Delete Order
           </button>
         </ul>
+        </CardElement>
       ));
   };
 

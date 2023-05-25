@@ -13,7 +13,7 @@ const WaiterForm = () => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    const storedTableData = localStorage.getItem("tableData");
+    const storedTableData = localStorage.getItem(tableData.dish);
     if (storedTableData) {
       setTableData(JSON.parse(storedTableData));
     }
@@ -32,7 +32,7 @@ const WaiterForm = () => {
     console.log("Form is submitted");
     console.log(formData);
     const updatedTableData = [...tableData, formData];
-    localStorage.setItem("tableData", JSON.stringify(updatedTableData));
+    localStorage.setItem(tableData.dish, JSON.stringify(updatedTableData));
     setTableData(updatedTableData);
     setFormData({
       OrderId: "",
