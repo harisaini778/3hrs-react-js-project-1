@@ -1,93 +1,48 @@
-import React, { useState } from "react";
+import React from "react";
 import CardElement from "./CardElement";
 
 const WaiterFormData = (props) => {
-  const { data } = props;
-  const [updatedData, setUpdatedData] = useState(data);
-  const [timerId, setTimerId] = useState(null);
+  const { tableData, setTableData } = props;
 
-  const handleInputChange = (event) => {
-    clearTimeout(timerId);
-    const { name, value } = event.target;
-    const updatedValue = { ...updatedData, [name]: value };
-    const newTimerId = setTimeout(() => {
-      setUpdatedData(updatedValue);
-    }, 500); // Adjust the delay duration as needed (in milliseconds)
-    setTimerId(newTimerId);
+  const handleDeleteChange = (orderId) => {
+    const updatedTableData = tableData.filter((tableData) => tableData.OrderId !== orderId);
+    localStorage.setItem("tableData", JSON.stringify(updatedTableData));
+    setTableData(updatedTableData);
   };
 
-  const handleDeleteChange = () => {
-    // Handle delete logic here
+  const renderTableData = (table) => {
+    return tableData
+      .filter((tableData) => tableData.table === table)
+      .map((tableData) => (
+        <ul key={tableData.OrderId} type="none">
+          <li>Order Id: {tableData.OrderId}</li>
+          <li>Price: {tableData.price}</li>
+          <li>Dish: {tableData.dish}</li>
+          <li>Table: {tableData.table}</li>
+          <button
+            className="btn btn-danger"
+            onClick={() => handleDeleteChange(tableData.OrderId)}
+          >
+            Delete Order
+          </button>
+        </ul>
+      ));
   };
 
   return (
     <CardElement>
       <div>
         <h1>Table-1</h1>
-        {updatedData &&
-          updatedData
-            .filter((tableData) => tableData.table === "Table-1")
-            .map((tableData) => (
-              <ul key={tableData.OrderId} type="none">
-                <li>Order Id: {tableData.OrderId}</li>
-                <li>Price: {tableData.price}</li>
-                <li>Dish: {tableData.dish}</li>
-                <li>Table: {tableData.table}</li>
-                <button
-                  className="btn btn-danger"
-                  onClick={handleDeleteChange}
-                >
-                  Delete Order
-                </button>
-              </ul>
-            ))}
+        {renderTableData("Table-1")}
       </div>
       <div>
         <h1>Table-2</h1>
-        {updatedData &&
-          updatedData
-            .filter((tableData) => tableData.table === "Table-2")
-            .map((tableData) => (
-              <ul key={tableData.OrderId} type="none">
-                <li>Order Id: {tableData.OrderId}</li>
-                <li>Price: {tableData.price}</li>
-                <li>Dish: {tableData.dish}</li>
-                <li>Table: {tableData.table}</li>
-                <button
-                  className="btn btn-danger"
-                  onClick={handleDeleteChange}
-                >
-                  Delete Order
-                </button>
-              </ul>
-            ))}
+        {renderTableData("Table-2")}
       </div>
       <div>
         <h1>Table-3</h1>
-        {updatedData &&
-          updatedData
-            .filter((tableData) => tableData.table === "Table-3")
-            .map((tableData) => (
-              <ul key={tableData.OrderId} type="none">
-                <li>Order Id: {tableData.OrderId}</li>
-                <li>Price: {tableData.price}</li>
-                <li>Dish: {tableData.dish}</li>
-                <li>Table: {tableData.table}</li>
-                <button
-                  className="btn btn-danger"
-                  onClick={handleDeleteChange}
-                >
-                  Delete Order
-                </button>
-              </ul>
-            ))}
+        {renderTableData("Table-3")}
       </div>
-      <input
-        type="text"
-        name="exampleField"
-        value={updatedData.exampleField || ""}
-        onChange={handleInputChange}
-      />
     </CardElement>
   );
 };

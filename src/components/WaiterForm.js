@@ -3,90 +3,99 @@ import React, { useState, useEffect } from "react";
 import WaiterFormData from "./WaiterFormData";
 
 const WaiterForm = () => {
+  const [formData, setFormData] = useState({
+    OrderId: "0",
+    price: "0",
+    dish: "0",
+    table: "Table-1",
+  });
 
-    const [formData, setFormData] = useState({
-       
-        OrderId: "",
-        price: "",
-        dish: "",
-        table: "Table-1"
+  const [tableData, setTableData] = useState([]);
+
+  useEffect(() => {
+    const storedTableData = localStorage.getItem("tableData");
+    if (storedTableData) {
+      setTableData(JSON.parse(storedTableData));
+    }
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form is submitted");
+    console.log(formData);
+    const updatedTableData = [...tableData, formData];
+    localStorage.setItem("tableData", JSON.stringify(updatedTableData));
+    setTableData(updatedTableData);
+    setFormData({
+      OrderId: "",
+      price: "",
+      dish: "",
+      table: "Table-1",
     });
+  };
 
-    useEffect(() => {
-        const storedFormData = localStorage.getItem("formData");
-        if (storedFormData) {
-            setFormData(JSON.parse(storedFormData));
-        }
-    }, []);
+  return (
+    <>
+      <CardElement>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="OrderId">Order Id : </label>
+            <input
+              id="OrderId"
+              type="number"
+              className="form-control"
+              name="OrderId"
+              value={formData.OrderId}
+              onChange={handleChange}
+            />
 
-    const handleChange = (e) => {
-      //  e.preventDefault();
-        const { name, value } = e.target;
-        setFormData((prevFormData) => {
-            return ({
-                ...prevFormData,
-                [name]: value
-            });
-        })
-    }
+            <label htmlFor="price">Choose Price : </label>
+            <input
+              id="price"
+              type="number"
+              className="form-control"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+            />
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("Form is submitted");
-        console.log(formData);
-        localStorage.setItem(formData.dish, JSON.stringify(formData));
-        setFormData({
-        OrderId: "",
-        price: "",
-        dish: "",
-        table: ""  
-        })
-    }
-    return (
-        <>
-            <CardElement>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group" >
-                    <label for="OrderId">Order Id : </label>
-                        <input
-                            id="OrderId"
-                            type="number"
-                            className="form-control"
-                            name="OrderId"
-                            value={formData.OrderId}
-                            onChange={handleChange} />
-                        
-                        <label for="price">Choose Price : </label>
+            <label htmlFor="dish">Choose Dish : </label>
+            <input
+              id="dish"
+              type="text"
+              className="form-control"
+              name="dish"
+              value={formData.dish}
+              onChange={handleChange}
+            />
 
-                        <input id="price"
-                            type="number"
-                            className="form-control"
-                            name="price"
-                            value={formData.price}
-                            onChange={handleChange} />
-                        
-                        <label for="dish">Choose Dish : </label>
+            <label htmlFor="table">Choose a table : </label>
+            <input
+              id="table"
+              type="text"
+              className="form-control"
+              name="table"
+              value={formData.table}
+              onChange={handleChange}
+            />
 
-                         <input id="dish"
-                            type="text"
-                            className="form-control"
-                            name="dish"
-                            value={formData.dish}
-                            onChange={handleChange} />
-                        
-                        <label for="table">Choose a table : </label>
+            <button className="btn btn-primary" type="submit">
+              Add to the list
+            </button>
+          </div>
+        </form>
+      </CardElement>
+      <WaiterFormData tableData={tableData} setTableData={setTableData} />
+    </>
+  );
+};
 
-                    <select className="form-control">
-                            <option value="Table-1"> Table-1</option>
-                        <option value="Table 2">Table-2</option>
-                        <option value="Table-3">Table-3</option>
-                    </select>
-                    <button className="btn btn-primary" type="submit">Add to the list</button>
-                </div>
-                </form>
-            </CardElement>
-            <WaiterFormData data={[formData] } />
-        </>
-    );
-}
 export default WaiterForm;
