@@ -1,5 +1,6 @@
 import CardElement from "./CardElement";
-import React, {useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import WaiterFormData from "./WaiterFormData";
 
 const WaiterForm = () => {
 
@@ -12,15 +13,9 @@ const WaiterForm = () => {
     });
 
     useEffect(() => {
-        const typingTimer = setTimeout(() => {
-            console.log(formData);
-        }, 500)
         const storedFormData = localStorage.getItem("formData");
         if (storedFormData) {
             setFormData(JSON.parse(storedFormData));
-        }
-        return () => {
-            clearTimeout(typingTimer);
         }
     }, []);
 
@@ -44,7 +39,7 @@ const WaiterForm = () => {
         OrderId: "",
         price: "",
         dish: "",
-        table: "Table-1"  
+        table: ""  
         })
     }
     return (
@@ -89,7 +84,8 @@ const WaiterForm = () => {
                     <button className="btn btn-primary" type="submit">Add to the list</button>
                 </div>
                 </form>
-                </CardElement>
+            </CardElement>
+            <WaiterFormData data={[formData] } />
         </>
     );
 }
