@@ -46,7 +46,8 @@ const WaiterForm = () => {
     <>
       <CardElement>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
+                  <div className="form-group" style={{
+                      textAlign:"start",fontFamily:"cursive",color:"gold"}}>
             <label htmlFor="OrderId">Order Id : </label>
             <input
               id="OrderId"
@@ -86,8 +87,8 @@ const WaiterForm = () => {
               value={formData.table}
               onChange={handleChange}
             />
-
-            <button className="btn btn-primary" type="submit">
+            <br/>
+            <button className="btn btn-warning" type="submit" style={{textAlign:"center"}}>
               Add to the list
             </button>
           </div>
